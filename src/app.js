@@ -2,24 +2,26 @@ const express = require('express')
 
 const app = express()
 
-// app.use('/test/2', (req, res)=> {
-//     res.send("second testing")
-// })
+
+// This will handle GET call to /user
+app.get('/user', (req, res)=>{
+    res.send({firstname : "Mahendar Reddy", lastname: "Bommu"})
+})
+
+app.post('/user', (req, res)=>{
+    res.send("Data successfully saved to database")
+})
+
+app.put('/user', (req,res)=>{
+    res.send("user data updated to database")
+})
+
+app.delete('/user', (req,res)=>{
+    res.send("User deleted successfully")
+})
 
 app.use('/test', (req, res)=>{
    res.send("Test code from server")
-})
-
-app.use('/hello', (req, res)=>{
-   res.send("Hello hello hello!")
-})
-
-// app.use((req, res)=>{
-//     res.send("Hello from server")
-// })
-
-app.use('/dashboard', (req, res)=>{
-    res.send("Dashboard")
 })
 
 app.use('/',(req, res)=>{

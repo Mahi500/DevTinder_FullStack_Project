@@ -2,6 +2,10 @@ const express = require('express')
 
 const app = express()
 
+// app.use('/test/2', (req, res)=> {
+//     res.send("second testing")
+// })
+
 app.use('/test', (req, res)=>{
    res.send("Test code from server")
 })

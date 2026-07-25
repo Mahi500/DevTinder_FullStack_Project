@@ -2,24 +2,32 @@ const express = require('express')
 
 const app = express()
 
-// GET /users ==> middleware chain ==> request handler
-
-app.use("/", (req, res, next)=>{
-    res.send("Handling / route")
-    next()
+// Auth Middleware handling all GET, POST call matching with route
+app.use('/admin',(req, res, next)=>{
+    const token ="xyz"
+    const isadminAuthorized = token === "xyz"
+    if(!isadminAuthorized){
+        res.status(401).send("Unathorized request")
+    }
+    else{
+        next()
+    }
 })
 
-app.get("/user", (req, res, next)=>{
-    console.log("handling /user route")
-    next()
-},
-(req, res, next)=>{
-    res.send("first route handler")
-},
-(req, res, next)=>{
-    res.send("second route handler")
-}
-)
+app.get('/user', (req, res)=>{
+    res.send("User data fetched")
+})
+
+app.get('/admin/getAllData', (req, res)=>{
+
+        res.send("All Data sent")
+
+})
+
+app.get('/admin/deleteUser', (req, res)=>{
+    
+        res.send("User deleted")
+})
 
 
 app.listen(7777, ()=>{

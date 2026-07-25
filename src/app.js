@@ -3,24 +3,22 @@ const express = require('express')
 
 const app = express()
 
-// Auth Middleware handling all GET, POST call matching with route
-app.use('/admin', adminAuth)
-//app.use('/user', userAuth)
 
-app.get('/user/AllData', userAuth, (req, res)=>{
-    res.send("User data fetched")
+app.get('/getUserData', (req, res)=>{
+    // Logic of DB call and get user data
+    try {
+    throw new Error("hgstshjsj")
+    res.send("User Data Sent")
+    }
+    catch(err) {
+        res.status(500).send("some error contact support team")
+    }
 })
 
-app.post('user/login', (req,res)=>{
-    res.send("user logged in successfully")
-})
-
-app.get('/admin/getAllData', (req, res)=>{
-        res.send("All Data sent")
-})
-
-app.get('/admin/deleteUser', (req, res)=>{
-        res.send("User deleted")
+app.use('/',(err, req, res, next)=>{
+    if(err) {
+        res.status(500).send("something went wrong")
+    }
 })
 
 app.listen(7777, ()=>{

@@ -2,27 +2,23 @@ const express = require('express')
 
 const app = express()
 
-app.use('/users', [(req, res, next)=>{
-    console.log("Response handler 1")
-    //res.send("Response 1!!")
+// GET /users ==> middleware chain ==> request handler
+
+app.use("/", (req, res, next)=>{
+    res.send("Handling / route")
     next()
-}, (req, res, next)=>{
-    console.log("Response handler 2")
-    //res.send("Response 2!!")
+})
+
+app.get("/user", (req, res, next)=>{
+    console.log("handling /user route")
     next()
-}, (req, res, next)=>{
-    console.log("Response handler 3")
-    //res.send("Response 3!!")
-    next()
-}, (req, res, next)=>{
-    console.log("Response handler 4")
-    //res.send("Response 4!!")
-    next()
-}, (req, res, next)=>{
-    console.log("Response handler 5")
-    res.send("Response 5!!")
-    //next()
-}]
+},
+(req, res, next)=>{
+    res.send("first route handler")
+},
+(req, res, next)=>{
+    res.send("second route handler")
+}
 )
 
 

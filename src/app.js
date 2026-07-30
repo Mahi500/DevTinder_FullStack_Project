@@ -5,21 +5,13 @@ const express = require('express')
 
 const app = express()
 // middleware which will read JSON object and convert it to JS object
+// work for all routes
 app.use(express.json())
 
 app.post('/signUp', (req, res)=>{
-    const userObj = {
-        firstName : "Nimmakayala",
-        lastName : "Anand",
-        emailId : "anand199827@gmail.com",
-        password : "ghevya@467",
-        age : 28,
-        gender : 'Male'
-    }
-    
     try {
        // creating new instance of User model
-       const user = new User(userObj)
+       const user = new User(req.body)
        user.save()
        console.log("User is successfully saved to database")
        res.send("User saved to the database successfully")

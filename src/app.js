@@ -36,13 +36,28 @@ app.get('/users', async (req, res)=>{
     }
     else{
       console.log("Found the users with emaild")
-      res.send(users)
+      res.send(user)
     }
-
   }
   catch (err){
       console.log("Something went wrong")
       res.status(500).send("Something went wrong")
+  }
+})
+
+app.get('/getUserById', async (req, res)=>{
+   try{
+   const user = await User.findById('6a6b05e0459fd67f0bfa9cdd')
+   if(!user) {
+     res.send("user not found").status(404)
+   }else{
+     console.log("User fetched successfully using Id")
+     res.send(user)
+   }
+  }
+  catch(error) {
+     console.log("Something went wrong")
+     res.status(500).send("Something went wrong")
   }
 })
 

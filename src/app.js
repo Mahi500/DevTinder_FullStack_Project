@@ -1,11 +1,46 @@
 const { adminAuth, userAuth }= require('./Middlewares/auth.js')
-require('./config/database.js')
+const {connectDB} = require('./config/database.js')
+const { User } = require('./models/user.js')
 const express = require('express')
 
 const app = express()
+// middleware which will read JSON object and convert it to JS object
+app.use(express.json())
 
+app.post('/signUp', (req, res)=>{
+    const userObj = {
+        firstName : "Nimmakayala",
+        lastName : "Anand",
+        emailId : "anand199827@gmail.com",
+        password : "ghevya@467",
+        age : 28,
+        gender : 'Male'
+    }
+    
+    try {
+       // creating new instance of User model
+       const user = new User(userObj)
+       user.save()
+       console.log("User is successfully saved to database")
+       res.send("User saved to the database successfully")
+    }
+    catch(error) {
+       console.log("User not saved. Something went wrong", error)
+       res.send("User not saved. Something went wrong")
+    }
+    
 
-
-app.listen(7777, ()=>{
-    console.log("Server is successfully listening on port 7777")
 })
+
+
+connectDB()
+  .then(()=>{
+        console.log("Database connection estoblished successfully")
+        app.listen(7777, ()=>{
+          console.log("Server is successfully listening on port 7777")
+        })
+      })
+  .catch ((err)=>{
+        console.log("Database connection not estoblished")
+      })
+    

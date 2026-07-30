@@ -7,12 +7,7 @@ const connectDB = async () =>{
 
 }
 
-connectDB()
-  .then(()=>{
-    console.log("Database connection estoblished successfully")
-   })
-  .catch((err)=>{
-    console.log("Database connection not estoblished. Failed top connect")
-   })
+module.exports = { connectDB }
+
 
 

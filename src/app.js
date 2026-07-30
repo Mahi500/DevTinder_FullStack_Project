@@ -29,8 +29,9 @@ app.get('/users', async (req, res)=>{
      const email = req.body.emailId
 
   try{
-    const users = await User.find({emailId : email})
-    if(users.length ===0){
+    // users returns an object not array for findOne
+    const user = await User.findOne({emailId : email})
+    if(!user){
       res.send("Not found any user").status(404)
     }
     else{

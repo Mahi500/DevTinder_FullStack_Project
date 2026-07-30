@@ -8,11 +8,12 @@ const app = express()
 // work for all routes
 app.use(express.json())
 
-app.post('/signUp', (req, res)=>{
+app.post('/signUp', async (req, res)=>{
     try {
        // creating new instance of User model
+       // creating a new user with request body from API
        const user = new User(req.body)
-       user.save()
+       await user.save()
        console.log("User is successfully saved to database")
        res.send("User saved to the database successfully")
     }
@@ -21,6 +22,44 @@ app.post('/signUp', (req, res)=>{
        res.send("User not saved. Something went wrong")
     }
     
+
+})
+
+app.get('/users', async (req, res)=>{
+     const email = req.body.emailId
+
+  try{
+    const users = await User.find({emailId : email})
+    if(users.length ===0){
+      res.send("Not found any user").status(404)
+    }
+    else{
+      console.log("Found the users with emaild")
+      res.send(users)
+    }
+
+  }
+  catch (err){
+      console.log("Something went wrong")
+      res.status(500).send("Something went wrong")
+  }
+})
+
+app.get('/feed',async (req, res)=>{
+  try{
+       const users = await User.find({})
+       if(users.length ===0){
+        res.status(404).send("Not found any user")
+       }
+       else{
+        console.log("All the user feed fetched")
+        res.send(users)
+       }
+  }
+  catch(err) {
+       console.log("User fetch failed. Something went wrong")
+       res.status(500).send("Something went Wrong")
+  }
 
 })
 

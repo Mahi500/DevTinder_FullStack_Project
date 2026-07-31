@@ -41,7 +41,7 @@ app.get('/users', async (req, res)=>{
   }
   catch (err){
       console.log("Something went wrong")
-      res.status(500).send("Something went wrong")
+      res.status(400).send("Something went wrong")
   }
 })
 
@@ -57,7 +57,7 @@ app.get('/getUserById', async (req, res)=>{
   }
   catch(error) {
      console.log("Something went wrong")
-     res.status(500).send("Something went wrong")
+     res.status(400).send("Something went wrong")
   }
 })
 
@@ -74,7 +74,7 @@ app.get('/feed',async (req, res)=>{
   }
   catch(err) {
        console.log("User fetch failed. Something went wrong")
-       res.status(500).send("Something went Wrong")
+       res.status(400).send("Something went Wrong")
   }
 
 })

@@ -45,22 +45,7 @@ app.get('/users', async (req, res)=>{
   }
 })
 
-app.get('/getUserById', async (req, res)=>{
-   try{
-   const user = await User.findById('6a6b05e0459fd67f0bfa9cdd')
-   if(!user) {
-     res.send("user not found").status(404)
-   }else{
-     console.log("User fetched successfully using Id")
-     res.send(user)
-   }
-  }
-  catch(error) {
-     console.log("Something went wrong")
-     res.status(400).send("Something went wrong")
-  }
-})
-
+// API to get all the users info
 app.get('/feed',async (req, res)=>{
   try{
        const users = await User.find({})
@@ -75,6 +60,48 @@ app.get('/feed',async (req, res)=>{
   catch(err) {
        console.log("User fetch failed. Something went wrong")
        res.status(400).send("Something went Wrong")
+  }
+
+})
+
+// API to delete the user by finding the id
+app.delete('/user', async (req, res)=>{
+    try{
+     const userId = req.body.userId
+     //const deletedUser = await user.findOneAndDelete({_id: userId})
+     const deletedUser = await User.findByIdAndDelete(userId)
+     if(!deletedUser){
+       console.log("Id not found")
+       res.status(404).send("Id not found")
+     }
+     else{
+       console.log("User deleted successfully", deletedUser)
+       res.send("User deleted successfully")
+     }
+    }
+    catch(error){
+       console.error("Something went wrong")
+       res.status(400).send("Something went wrong while deleting user")
+     }
+})
+
+// API to update a particular field of the user
+app.patch('/user', async (req, res)=>{
+  try{
+      const userId = req.body.userId
+      const updatedUser = await User.findByIdAndUpdate(userId, { password: 'mabbu@543' }, {returnDocument : 'after'})
+      if(!updatedUser){
+        console.log('User not found to update')
+        res.status(404).send("User not found to update")
+      }
+      else{
+        console.log("user updated successfully", updatedUser)
+        res.send("User updated successfully")
+      }
+  }
+  catch(error){
+      console.log("Something went wrong")
+      res.status(400).send("Something went wrong while updating the user")
   }
 
 })

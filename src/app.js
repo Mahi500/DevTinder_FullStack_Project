@@ -90,6 +90,7 @@ app.patch('/user', async (req, res)=>{
   try{
       const userId = req.body.userId
       const data = req.body
+      //const updatedUser = await User.findOneAndUpdate({_id: userId}, data)
       const updatedUser = await User.findByIdAndUpdate(userId, data, {returnDocument : 'after'})
       if(!updatedUser){
         console.log('User not found to update')

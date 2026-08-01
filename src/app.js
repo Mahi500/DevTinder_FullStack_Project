@@ -89,7 +89,8 @@ app.delete('/user', async (req, res)=>{
 app.patch('/user', async (req, res)=>{
   try{
       const userId = req.body.userId
-      const updatedUser = await User.findByIdAndUpdate(userId, { password: 'mabbu@543' }, {returnDocument : 'after'})
+      const data = req.body
+      const updatedUser = await User.findByIdAndUpdate(userId, data, {returnDocument : 'after'})
       if(!updatedUser){
         console.log('User not found to update')
         res.status(404).send("User not found to update")

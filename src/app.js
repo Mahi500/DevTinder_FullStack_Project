@@ -88,10 +88,11 @@ app.delete('/user', async (req, res)=>{
 // API to update a particular field of the user
 app.patch('/user', async (req, res)=>{
   try{
-      const userId = req.body.userId
+      const userId = req.body.emailId
       const data = req.body
       //const updatedUser = await User.findOneAndUpdate({_id: userId}, data)
-      const updatedUser = await User.findByIdAndUpdate(userId, data, {returnDocument : 'after'})
+      //const updatedUser = await User.findByIdAndUpdate(userId, data, {returnDocument : 'after'})
+      const updatedUser = await User.findOneAndUpdate({emailId : userId}, data)
       if(!updatedUser){
         console.log('User not found to update')
         res.status(404).send("User not found to update")

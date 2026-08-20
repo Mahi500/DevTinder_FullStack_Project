@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 // Schema and SchemaType
 const userSchema = new mongoose.Schema({
@@ -65,8 +67,20 @@ const userSchema = new mongoose.Schema({
 },
 {
     timestamps : true,
-}
+},
+
 )
+userSchema.methods.getJWT = async function() {
+    const user = this
+    const jwttoken = await jwt.sign({_id : user._id}, 'Tk@5f&W3021', {expiresIn : '1d' })
+    return jwttoken
+},
+
+userSchema.methods.validatePassword = async function(passwordInputByUser) {
+    const user = this
+    const validPassword = await bcrypt.compare(passwordInputByUser, user.password)
+    return validPassword
+}
 
 // this should starts with capital letter
 const User = mongoose.model("User", userSchema)

@@ -1,3 +1,6 @@
+const { User } = require('../models/user.js')
+const { validateSignUpData, validateLoginData } = require("../utils/validation.js")
+const bcrypt = require('bcrypt')
 const express = require('express')
 const authRouter = express.Router()
 
@@ -25,4 +28,36 @@ authRouter.post('/signUp', async (req, res)=>{
     }
 })
 
-module.exports = { authRouter }
+authRouter.post('/login', async (req, res)=>{
+  try{
+  // validation of request body
+  validateLoginData(req)
+  const {emailId, password} = req.body
+  const user = await User.findOne({emailId : emailId })
+  if(!user){
+    throw new Error("Invalid Credentials")
+  }
+  const passwordValid = await user.validatePassword(password)
+    if(passwordValid) {
+      // id and secret_key assigned as jwttoken and we can declare expiry time in seconds
+      // current user
+      const jwttoken = await user.getJWT()
+      // 8 hrs we are setting for cookie expiry / millisecs
+      res.cookie("token", jwttoken, { expires : new Date(Date.now()+ 1 * 36000)})
+      res.send("Login Successful!!!")
+    }
+    else{
+      throw new Error("Invalid Credentials")
+    }
+  }
+  catch(error) {
+    res.status(400).send("Error :" + error.message)
+  }
+})
+
+authRouter.post('/logout', async (req, res)=>{
+  res.cookie("token", null , {expires : new Date(Date.now())}).send("User logged out successfully!!")
+  // res.send("User logged out successfully!!")
+})
+
+module.exports = authRouter 

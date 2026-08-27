@@ -35,5 +35,15 @@ profileRouter.patch('/profile/edit', userAuth, async (req, res)=>{
   }
 })
 
+profileRouter.patch('/profile/password', async (req, res)=>{
+  try {
+        const email = req.body.emailId
+        res.send("Success")
+  }
+  catch(error) {
+        throw new Error("Error :" + error.message)
+  }
+})
+
 
 module.exports = profileRouter 

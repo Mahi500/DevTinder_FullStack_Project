@@ -60,6 +60,10 @@ userRouter.get('/user/feed', userAuth, async (req, res)=>{
        // 4. already received connection request
        // 5. think about edge cases
        const loggedInUser = req.user
+       const page = parseInt(req.query.page) || 1
+       let limit = parseInt(req.query.limit) || 2
+       limit = limit > 50 ? 50 : limit
+       console.log(page)
        // Find all the connection requests (sent + received)
        const connectionRequests = await ConnectionRequestModel.find({
         $or : [
@@ -80,7 +84,8 @@ userRouter.get('/user/feed', userAuth, async (req, res)=>{
         {_id : { $ne : loggedInUser._id} }
         ]
   }).select("firstName lastName about skills photoUrl")
-       console.log(newFeed)
+    .skip((page-1)*limit)
+    .limit(limit)
        res.json({ newFeed })
   }
   catch(error) {
